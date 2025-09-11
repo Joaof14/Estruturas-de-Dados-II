@@ -11,6 +11,8 @@ typedef struct node{
 
 } Node;
 
+//Declarações de funções implementadas.
+
 Node* createNode(int key);
 Node* getMin(Node* root);
 Node* getMax(Node* root);
