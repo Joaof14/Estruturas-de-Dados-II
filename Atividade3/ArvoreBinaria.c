@@ -34,18 +34,28 @@ insertNode(&root, 70);
 */
 
 int main(){
+    Node * ref = NULL;
+
     Node * root = createNode(10);
     root->left = createNode(5);
     root->right = createNode(15);
     root->right->left = createNode(12);
     root->right->right = createNode(18);
 
-    Node * ref = NULL;
+    //testando mínimo;
     ref = getMin(root);
     printf("O mínimo é: %d\n", ref->key);
+
+    //Testando Sucessor do mínimo
+    ref = getSuccessor(root);
+    printf("O sucessor do mínimo é: %d\n", ref->key);
+
+    //testando máximo;
     ref = getMax(root);
     printf("O máximo é: %d\n", ref->key);
     
+    
+
 }
 
 //Criar Nó
@@ -71,4 +81,35 @@ Node* getMax(Node * root){
         root = root->right;
     }
     return root;
+}
+
+Node* getSuccessor(Node* root){
+    Node * minNode = getMin(root);
+
+    if (minNode == NULL) return NULL;
+
+    if (minNode->right != NULL){
+        return getMin(minNode->right); //Se tiver subárvore direita, o menor dela é o sucessor do mínimo
+    }
+    else{
+        Node * suc = NULL;
+        Node * current = root;
+        while(current !=minNode)
+        {
+            if (minNode->key < current->key)
+            {
+                suc = current;
+                current = current->left;
+            }
+            else{
+                current = current->right;
+            }
+        }
+        return suc;
+    }
+
+}
+
+int getSize(Node *root){
+
 }
