@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 
+
 /* Estrutura de Nó*/
 
 typedef struct node{
@@ -10,9 +11,15 @@ typedef struct node{
     struct node * right;
 
 } Node;
+//declaração de funções auxiliares
+int max(int a, int b){
+    return (a > b) ? a : b;
+}
 
 //Declarações de funções implementadas.
-
+void preOrder(Node* root);
+void inOrder(Node* root);
+void posOrder(Node* root);
 Node* createNode(int key);
 Node* getMin(Node* root);
 Node* getMax(Node* root);
@@ -35,6 +42,7 @@ insertNode(&root, 70);
 
 int main(){
     Node * ref = NULL;
+    int refInt;
 
     Node * root = createNode(10);
     root->left = createNode(5);
@@ -54,7 +62,13 @@ int main(){
     ref = getMax(root);
     printf("O máximo é: %d\n", ref->key);
     
-    
+    //Descobrir altura da árvore
+    refInt = getHeight(root);
+    printf("A altura é: %d\n", refInt);
+
+    //Descobrir tamanho da árvore
+    refInt = getSize(root);
+    printf("O tamanho é: %d\n", refInt);
 
 }
 
@@ -64,6 +78,7 @@ Node *createNode(int key){
 
     newNode->key = key;
     newNode->left = newNode->right = NULL;
+    return newNode;
 }
 
 
@@ -113,9 +128,14 @@ Node* getSuccessor(Node* root){
 int getSize(Node *root){
     if (root == NULL) return 0;
 
-    return 1 + size(root->left) + size(root->right);
+    return 1 + getSize(root->left) + getSize(root->right);
 }
 
-int getHeight(Node* root){
-    
-}
+int getHeight(Node *root){
+    if (root == NULL) return -1;
+
+    int leftHeight = getHeight(root->left);
+    int rightHeight = getHeight(root->right);
+
+    return 1 + max(leftHeight, rightHeight);
+}   
