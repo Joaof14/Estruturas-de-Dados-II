@@ -111,5 +111,11 @@ Node* getSuccessor(Node* root){
 }
 
 int getSize(Node *root){
+    if (root == NULL) return 0;
 
+    return 1 + size(root->left) + size(root->right);
+}
+
+int getHeight(Node* root){
+    
 }
