@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
 /* Estrutura de Nó*/
 
 typedef struct node{
@@ -33,13 +31,18 @@ Node* getSuccessor(Node* root);
 //questao 2
 int getSize(Node* root);
 int getHeight(Node* root);
-int getMedian(Node* root);
+float getMedian(Node* root);
 
 //questao 3
 Node* removeMin(Node* tree);
+
+//Questao 4
 Node* changeKey(Node* root, int oldVal, int newVal);
+//Questao 5
 //bool isBST(Node* root);
 
+
+//Questao 7
 void insertNode (Node** node, int key); /*insertNode não possui retorno,
 mas deve atualizar node (a árvore passada como parâmetro) internamente.
 Exemplo de uso: 
@@ -88,7 +91,10 @@ int main(){
 
     printf("\nBusca em pós-ordem:");
     posOrder(root);
-    
+
+    //Mediana da árvore
+    printf("\n\nMediana da árvore: %.2f", getMedian(root));
+
 
 }
 
@@ -102,7 +108,32 @@ Node *createNode(int key){
 }
 
 
-//Obter o mínimo
+//Funções de travessia na arvore: pré-ordem, ordem e pós ordem:
+void preOrder(Node * root){
+    if (root){
+        printf(" %d", root->key);
+        preOrder(root->left);
+        preOrder(root->right);
+    }
+}
+
+void inOrder(Node * root){
+    if(root){
+        inOrder(root->left);
+        printf(" %d", root->key);
+        inOrder(root->right);
+    }
+}
+
+void posOrder(Node * root){
+    if (root){
+        posOrder(root->left);
+        posOrder(root->right);
+        printf(" %d", root->key);
+    }
+}
+
+//QUESTAO 1
 Node* getMin(Node * root){
     while (root->left != NULL){
         root = root->left;
@@ -110,7 +141,6 @@ Node* getMin(Node * root){
     return root;
 }
 
-//Obter o máximo
 Node* getMax(Node * root){
     while (root->right != NULL){
         root = root->right;
@@ -145,6 +175,7 @@ Node* getSuccessor(Node* root){
 
 }
 
+//QUESTAO 2
 int getSize(Node *root){
     if (root == NULL) return 0;
 
@@ -160,28 +191,47 @@ int getHeight(Node *root){
     return 1 + max(leftHeight, rightHeight);
 }   
 
-
-//Funções de travessia na arvore: pré-ordem, ordem e pós ordem:
-void preOrder(Node * root){
-    if (root){
-        printf(" %d", root->key);
-        preOrder(root->left);
-        preOrder(root->right);
-    }
+int countNodes(Node * root){
+    if (root == NULL){return 0;}
+    return 1 + countNodes(root->right) + countNodes(root->left);
 }
 
-void inOrder(Node * root){
-    if(root){
-        inOrder(root->left);
-        printf(" %d", root->key);
-        inOrder(root->right);
-    }
+void inOrderTransversal(Node * root, int * array, int*index){
+    if (root == NULL){return;}
+
+    inOrderTransversal(root->left, array, index);
+    array[(*index)++] = root -> key;
+    inOrderTransversal(root->right, array, index);
 }
 
-void posOrder(Node * root){
-    if (root){
-        posOrder(root->left);
-        posOrder(root->right);
-        printf(" %d", root->key);
+float getMedian(Node * root){
+    int n = countNodes(root);
+    if (n == 0) { return 0.0f;}
+
+    int * elements = (int*)malloc(n*sizeof(int));
+    int index = 0;
+
+    inOrderTransversal(root, elements, &index);
+
+    float median;
+
+    if (n%2 == 1)
+    {
+        median = (float)elements[n/2];
     }
+    else{
+        median = (float)(elements[(n/2) -1] + elements[n/2]) / 2;
+    }
+
+    free(elements);
+    return median;
+
+
+}
+
+
+
+//Questao 3
+Node * removeMin(Node * tree){
+
 }
