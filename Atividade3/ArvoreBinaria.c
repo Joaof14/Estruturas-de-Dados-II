@@ -16,17 +16,26 @@ int max(int a, int b){
     return (a > b) ? a : b;
 }
 
-//Declarações de funções implementadas.
+//Declarações de funções a serem implementadas.
+
+//Funções de travessoa
 void preOrder(Node* root);
 void inOrder(Node* root);
 void posOrder(Node* root);
+
+
 Node* createNode(int key);
+//questao 1
 Node* getMin(Node* root);
 Node* getMax(Node* root);
 Node* getSuccessor(Node* root);
+
+//questao 2
 int getSize(Node* root);
 int getHeight(Node* root);
 int getMedian(Node* root);
+
+//questao 3
 Node* removeMin(Node* tree);
 Node* changeKey(Node* root, int oldVal, int newVal);
 //bool isBST(Node* root);
@@ -69,6 +78,17 @@ int main(){
     //Descobrir tamanho da árvore
     refInt = getSize(root);
     printf("O tamanho é: %d\n", refInt);
+
+    //Funções de travessia
+    printf("\nBusca em pré-ordem:");
+    preOrder(root);
+
+    printf("\nBusca em ordem:");
+    inOrder(root);
+
+    printf("\nBusca em pós-ordem:");
+    posOrder(root);
+    
 
 }
 
@@ -139,3 +159,29 @@ int getHeight(Node *root){
 
     return 1 + max(leftHeight, rightHeight);
 }   
+
+
+//Funções de travessia na arvore: pré-ordem, ordem e pós ordem:
+void preOrder(Node * root){
+    if (root){
+        printf(" %d", root->key);
+        preOrder(root->left);
+        preOrder(root->right);
+    }
+}
+
+void inOrder(Node * root){
+    if(root){
+        inOrder(root->left);
+        printf(" %d", root->key);
+        inOrder(root->right);
+    }
+}
+
+void posOrder(Node * root){
+    if (root){
+        posOrder(root->left);
+        posOrder(root->right);
+        printf(" %d", root->key);
+    }
+}
