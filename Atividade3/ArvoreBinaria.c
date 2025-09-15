@@ -25,29 +25,29 @@ void posOrder(Node* root);
 
 
 Node* createNode(int key);
-//questao 1
+//questão 1
 Node* getMin(Node* root);
 Node* getMax(Node* root);
 Node* getSuccessor(Node* root);
 
-//questao 2
+//questão 2
 int getSize(Node* root);
 int getHeight(Node* root);
 float getMedian(Node* root);
 
-//questao 3
+//questão 3
 Node* removeMin(Node* tree);
 
-//Questao 4
+//Questão 4
 Node* changeKey(Node* root, int oldVal, int newVal);
-//Questao 5
+//Questão 5
 bool isBST(Node* root);
 
-//Questao 6
+//Questão 6
 Node * insertNodeIter (Node* node, int key);
 
-//Questao 7
-void insertNodeVoid(Node** node, int key); /*insertNode não possui retorno,
+//Questão 7
+void insertNodeRef(Node** node, int key); /*insertNode não possui retorno,
 mas deve atualizar node (a árvore passada como parâmetro) internamente.
 Exemplo de uso: 
 Node* root = NULL;
@@ -55,6 +55,9 @@ insertNode(&root, 50);
 insertNode(&root, 30);
 insertNode(&root, 70); 
 */
+
+//Questão 8
+Node * SearchIter(Node * root, int key);
 
 int main(){
     Node * ref = NULL;
@@ -66,25 +69,6 @@ int main(){
     root->right->left = createNode(12);
     root->right->right = createNode(18);
 
-    //testando mínimo;
-    ref = getMin(root);
-    printf("O mínimo é: %d\n", ref->key);
-
-    //Testando Sucessor do mínimo
-    ref = getSuccessor(root);
-    printf("O sucessor do mínimo é: %d\n", ref->key);
-
-    //testando máximo;
-    ref = getMax(root);
-    printf("O máximo é: %d\n", ref->key);
-    
-    //Descobrir altura da árvore
-    refInt = getHeight(root);
-    printf("A altura é: %d\n", refInt);
-
-    //Descobrir tamanho da árvore
-    refInt = getSize(root);
-    printf("O tamanho é: %d\n", refInt);
 
     //Funções de travessia
     printf("\nBusca em pré-ordem:");
@@ -96,20 +80,76 @@ int main(){
     printf("\nBusca em pós-ordem:");
     posOrder(root);
 
+
+    //Questão 1:
+    printf("\n\nQuestão 1\n");
+    //Mínimo e sucessor do mínimo
+    ref = getMin(root);
+    printf("O mínimo é: %d\n", ref->key);
+
+    ref = getSuccessor(root);
+    printf("O sucessor do mínimo é: %d\n", ref->key);
+
+    //Plus: Máximo
+    ref = getMax(root);
+    printf("O máximo é: %d\n", ref->key);
+    
+
+    //Questão 2:
+    printf("\n\nQuestão 2\n");
+    //Descobrir altura da árvore
+    refInt = getHeight(root);
+    printf("A altura é: %d\n", refInt);
+
+    //Descobrir tamanho da árvore
+    refInt = getSize(root);
+    printf("O tamanho é: %d\n", refInt);
+
     //Mediana da árvore
     printf("\n\nMediana da árvore: %.2f", getMedian(root));
 
-    printf("\nÁrvore é BST?: %d", isBST(root));
 
+    ////Questão 7: Inserção por passagem de referencia
+    printf("\n\nQuestão 7: Inserção por passagem de referencia\n");
+    insertNodeRef(&root, 50);
+    insertNodeRef(&root, 30);
+    insertNodeRef(&root, 70); 
+    inOrder(root);
+    
+
+    //Questão 4 -----
+
+    //Questão 3 remoção de mínimo:
+    printf("\n\nQuestão 3 remoção de mínimo\n");
     printf("\nBusca em ordem após remover mínimo:");
     Node * min = removeMin(root);
     inOrder(root);
 
-    printf("\nÁrvore é BST após remover mínimo?: %d", isBST(root));
+    //Questão 5: BST
+    printf("\n\n//Questão 5: BST\n");
+    printf("Árvore é BST?: %d", isBST(root));
 
+    /*printf("\nBusca em ordem após remover mínimo:");
+    min = removeMin(root);
+    inOrder(root);
+
+    printf("\nÁrvore é BST após remover mínimo?: %d", isBST(root));*/
+
+    //Questão 6: inserção iterativa
+    printf("Questão 6: inserção iterativa");
     root = insertNodeIter(root, 38);
     printf("\nÁrvore após inserir nó 50:\n");
     preOrder(root);
+
+    
+
+
+
+    //Questão 8: Busca iterativa;
+    printf("//Questão 8: Busca iterativa");
+
+
+
 }
 
 //Criar Nó
@@ -147,7 +187,7 @@ void posOrder(Node * root){
     }
 }
 
-//QUESTAO 1
+//QUESTão 1
 Node* getMin(Node * root){
     while (root->left != NULL){
         root = root->left;
@@ -189,7 +229,7 @@ Node* getSuccessor(Node* root){
 
 }
 
-//QUESTAO 2
+//QUESTão 2
 int getSize(Node *root){
     if (root == NULL) return 0;
 
@@ -245,7 +285,7 @@ float getMedian(Node * root){
 
 
 
-//Questao 3
+//Questão 3
 Node * removeMin(Node * tree){
     if (tree == NULL){return NULL;} // se a raíz é nula retorna nulo
     
@@ -410,7 +450,7 @@ bool isBST(Node * root){
 
 
 
-//Questao 6
+//Questão 6
 Node * insertNodeIter (Node* node, int key){
 
     if (node == NULL){
@@ -449,8 +489,8 @@ Node * insertNodeIter (Node* node, int key){
     return node;
 }
 
-//Questao 7
-void insertNodeVoid(Node** node, int key){
+//Questão 7
+void insertNodeRef(Node** node, int key){
     if (*node == NULL){
         *node = createNode(key);
         return;
@@ -474,7 +514,7 @@ void insertNodeVoid(Node** node, int key){
         else if (key < current->key){
 
             if (current->left != NULL){current = current->left;}
-            
+
             else{
                 current->left = createNode(key);
                 break;
@@ -485,4 +525,9 @@ void insertNodeVoid(Node** node, int key){
             break;
         }
     }
+}
+
+//Questão 8
+Node * SearchIter(Node * root, int key){
+
 }
