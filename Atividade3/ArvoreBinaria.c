@@ -107,6 +107,9 @@ int main(){
 
     printf("\nÁrvore é BST após remover mínimo?: %d", isBST(root));
 
+    root = insertNodeIter(root, 38);
+    printf("\nÁrvore após inserir nó 50:\n");
+    preOrder(root);
 }
 
 //Criar Nó
@@ -440,7 +443,7 @@ Node * insertNodeIter (Node* node, int key){
         }
         else{
             printf("\nNó com esse valor ja existe!. Nessa versão não são aceitas duplicatas!");
-            return;
+            break;
         }
     }
     return node;
@@ -448,5 +451,38 @@ Node * insertNodeIter (Node* node, int key){
 
 //Questao 7
 void insertNodeVoid(Node** node, int key){
+    if (*node == NULL){
+        *node = createNode(key);
+        return;
+    }
 
+   Node * current = *node;
+
+    while(current!= NULL){
+        
+        if (key > current->key){
+
+            if (current->right != NULL) {current = current->right;}
+
+            else {
+                current->right = createNode(key);
+                break;
+            }
+
+        }
+
+        else if (key < current->key){
+
+            if (current->left != NULL){current = current->left;}
+            
+            else{
+                current->left = createNode(key);
+                break;
+                }
+        }
+        else{
+            printf("\nNó com esse valor ja existe!. Nessa versão não são aceitas duplicatas!");
+            break;
+        }
+    }
 }
