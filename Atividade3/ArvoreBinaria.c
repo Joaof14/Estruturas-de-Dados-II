@@ -44,7 +44,7 @@ Node* changeKey(Node* root, int oldVal, int newVal);
 bool isBST(Node* root);
 
 //Questao 6
-void insertNodeIter (Node* node, int key);
+Node * insertNodeIter (Node* node, int key);
 
 //Questao 7
 void insertNodeVoid(Node** node, int key); /*insertNode não possui retorno,
@@ -403,4 +403,50 @@ bool isBST(Node * root){
         return true & isBST(root->right) && isBST(root->left);
     }
     return false;
+}
+
+
+
+//Questao 6
+Node * insertNodeIter (Node* node, int key){
+
+    if (node == NULL){
+        
+        return createNode(key);
+    }
+
+    Node * current = node;
+
+    while(current!= NULL){
+        
+        if (key > current->key){
+
+            if (current->right != NULL) {current = current->right;}
+
+            else {
+                current->right = createNode(key);
+                break;
+            }
+
+        }
+
+        else if (key < current->key){
+
+            if (current->left != NULL){current = current->left;}
+            else{
+                current->left = createNode(key);
+                break;
+                }
+        }
+        else{
+            printf("\nNó com esse valor ja existe!. Nessa versão não são aceitas duplicatas!");
+            return;
+        }
+    }
+    return node;
+}
+
+//Questao 7
+void insertNodeVoid(Node** node, int key){
+
 }
