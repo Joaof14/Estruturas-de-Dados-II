@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <limits.h>
 
 /* Estrutura de Nó*/
 
@@ -39,11 +41,13 @@ Node* removeMin(Node* tree);
 //Questao 4
 Node* changeKey(Node* root, int oldVal, int newVal);
 //Questao 5
-//bool isBST(Node* root);
+bool isBST(Node* root);
 
+//Questao 6
+void insertNodeIter (Node* node, int key);
 
 //Questao 7
-void insertNode (Node** node, int key); /*insertNode não possui retorno,
+void insertNodeVoid(Node** node, int key); /*insertNode não possui retorno,
 mas deve atualizar node (a árvore passada como parâmetro) internamente.
 Exemplo de uso: 
 Node* root = NULL;
@@ -95,6 +99,13 @@ int main(){
     //Mediana da árvore
     printf("\n\nMediana da árvore: %.2f", getMedian(root));
 
+    printf("\nÁrvore é BST?: %d", isBST(root));
+
+    printf("\nBusca em ordem após remover mínimo:");
+    Node * min = removeMin(root);
+    inOrder(root);
+
+    printf("\nÁrvore é BST após remover mínimo?: %d", isBST(root));
 
 }
 
@@ -233,5 +244,163 @@ float getMedian(Node * root){
 
 //Questao 3
 Node * removeMin(Node * tree){
+    if (tree == NULL){return NULL;} // se a raíz é nula retorna nulo
+    
+    //Se não tem filho esquerdo, ele é o mínimo.
+    if (tree->left == NULL){ // se for a raíz retorna nulo (remove)
+        Node * rightC = tree->right;
+        free(tree);
+        return rightC;
+    }
 
+    tree->left = removeMin(tree->left);
+    return tree;
+    
+    /* Abordagem iterativa
+    if (tree == NULL) {
+        return NULL;
+    }
+
+    Node * min = getMin(tree);
+    if (min == tree) {
+        Node * newRoot = tree->right;
+        free(tree);
+        return newRoot;
+    }
+
+    Node * father = tree;
+    while (father->left != min) {
+        father = father->left;
+    }
+
+    if (min->right == NULL) {
+        father->left = NULL;
+    } else {
+        father->left = min->right;
+    }
+
+    free(min);
+    return tree;
+}*/
+    
+    
+}
+
+
+//Questão 4
+
+//função de busca de nó
+Node * search(Node* root, int key){
+    if (root = NULL) {
+        printf("Nó não encontrado!");
+        return NULL;
+    }
+    if (key < root->key){return root;}
+    else if (key > root->key){
+        root = search(root->right, key);
+    }
+    else{root = search(root->left, key);}
+    return root;
+    
+}
+
+Node * removeNode(Node* root, int key){
+    if (root == NULL){
+        return NULL;
+    }
+    if (key > root->key){
+        root->right = removeNode(root->right, key);
+    }
+    else if (key < root->key){
+        root->left = removeNode(root->right, key);
+    }
+    else{
+        if (root->left == NULL){
+            Node * temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if(root->right == NULL){
+            Node * temp = root->left;
+            free(root);
+            return temp;
+        }
+        else{
+            Node * temp = getMin(root->right);
+            root->key = temp->key;
+            root->right = removeNode(root->right, temp->key);
+        }
+    }
+
+}
+
+Node * insertNode(Node* root, int key){
+    if(root == NULL){
+        Node * newNode = createNode(key);
+        return newNode;
+    }
+    if(key > root->key){
+        root->right = insertNode(root->right, key);
+    }
+    else if(key < root->key){
+        root->left = insertNode(root->left, key);
+    }
+    else{
+        printf("Erro, nó ja existe!\n");
+    }
+    return root;
+
+}
+
+
+/*Node* changeKey(Node* root, int oldVal, int newVal){
+    if (root == NULL) return NULL;
+
+    if (oldVal > root->key){
+        if (newVal >= root->key){
+            root->right = changeKey(root->right, oldVal, newVal);
+        }
+        else{
+            printf("Erro: Nova chave quebra a propriedade BST\n");
+            return root;
+        }
+        
+    }
+    else if (oldVal < root->key){
+        if (newVal <= root->key){
+            root->left = changeKey(root->left, oldVal, newVal);
+            return root;
+        }
+        else{
+            printf("Erro: Nova chave quebra a propriedade BST\n");
+            return root;
+        }
+        
+    }
+    else{
+
+        int maxLeft = (root->left != NULL) ? getMax(root->left) : INT_MIN;
+        int minRight = (root->right != NULL) ? getMin(root->right) : INT_MAX;
+
+        if (newVal >= maxLeft && newVal <= minRight)
+        {root->key = newVal;}
+        else{
+            printf("Erro: Nova chave quebra a propriedade BST\n");
+        }
+    }
+    return root;
+}
+*/
+
+bool isBST(Node * root){
+    if (root == NULL){
+        return true;
+    }
+
+   int rightV = (root->right != NULL) ? getMin(root->right)->key : INT_MAX;
+    int leftV  = (root->left  != NULL) ? getMax(root->left)->key  : INT_MIN;
+    if ( rightV > root->key && leftV < root->key){
+        return true & isBST(root->right) && isBST(root->left);
+    }
+    return false;
 }
