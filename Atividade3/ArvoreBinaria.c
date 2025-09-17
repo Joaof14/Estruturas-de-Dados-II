@@ -2,157 +2,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <limits.h>
-
-/* Estrutura de Nó*/
-
-typedef struct node{
-    int key;
-    struct node *left;
-    struct node * right;
-
-} Node;
-//declaração de funções auxiliares
-int max(int a, int b){
-    return (a > b) ? a : b;
-}
-
-//Declarações de funções a serem implementadas.
-
-//Funções de travessoa
-void preOrder(Node* root);
-void inOrder(Node* root);
-void posOrder(Node* root);
+#include "ArvoreBinaria.h"
 
 
-Node* createNode(int key);
-//questão 1
-Node* getMin(Node* root);
-Node* getMax(Node* root);
-Node* getSuccessor(Node* root);
-
-//questão 2
-int getSize(Node* root);
-int getHeight(Node* root);
-float getMedian(Node* root);
-
-//questão 3
-Node* removeMin(Node* tree);
-
-//Questão 4
-Node* changeKey(Node* root, int oldVal, int newVal);
-//Questão 5
-bool isBST(Node* root);
-
-//Questão 6
-Node * insertNodeIter (Node* node, int key);
-
-//Questão 7
-void insertNodeRef(Node** node, int key); /*insertNode não possui retorno,
-mas deve atualizar node (a árvore passada como parâmetro) internamente.
-Exemplo de uso: 
-Node* root = NULL;
-insertNode(&root, 50);
-insertNode(&root, 30);
-insertNode(&root, 70); 
-*/
-
-//Questão 8
-Node * SearchIter(Node * root, int key);
-
-int main(){
-    Node * ref = NULL;
-    int refInt;
-
-    Node * root = createNode(10);
-    root->left = createNode(5);
-    root->right = createNode(15);
-    root->right->left = createNode(12);
-    root->right->right = createNode(18);
-
-
-    //Funções de travessia
-    printf("\nBusca em pré-ordem:");
-    preOrder(root);
-
-    printf("\nBusca em ordem:");
-    inOrder(root);
-
-    printf("\nBusca em pós-ordem:");
-    posOrder(root);
-
-
-    //Questão 1:
-    printf("\n\nQuestão 1\n");
-    //Mínimo e sucessor do mínimo
-    ref = getMin(root);
-    printf("O mínimo é: %d\n", ref->key);
-
-    ref = getSuccessor(root);
-    printf("O sucessor do mínimo é: %d\n", ref->key);
-
-    //Plus: Máximo
-    ref = getMax(root);
-    printf("O máximo é: %d\n", ref->key);
-    
-
-    //Questão 2:
-    printf("\n\nQuestão 2\n");
-    //Descobrir altura da árvore
-    refInt = getHeight(root);
-    printf("A altura é: %d\n", refInt);
-
-    //Descobrir tamanho da árvore
-    refInt = getSize(root);
-    printf("O tamanho é: %d\n", refInt);
-
-    //Mediana da árvore
-    printf("\n\nMediana da árvore: %.2f", getMedian(root));
-
-
-    ////Questão 7: Inserção por passagem de referencia
-    printf("\n\nQuestão 7: Inserção por passagem de referencia\n");
-    insertNodeRef(&root, 50);
-    insertNodeRef(&root, 30);
-    insertNodeRef(&root, 70); 
-    inOrder(root);
-    
-
-    //Questão 4 -----
-
-    //Questão 3 remoção de mínimo:
-    printf("\n\nQuestão 3 remoção de mínimo\n");
-    printf("\nBusca em ordem após remover mínimo:");
-    Node * min = removeMin(root);
-    inOrder(root);
-
-    //Questão 5: BST
-    printf("\n\n//Questão 5: BST\n");
-    printf("Árvore é BST?: %d", isBST(root));
-
-    /*printf("\nBusca em ordem após remover mínimo:");
-    min = removeMin(root);
-    inOrder(root);
-
-    printf("\nÁrvore é BST após remover mínimo?: %d", isBST(root));*/
-
-    //Questão 6: inserção iterativa
-    printf("\n\nQuestão 6: inserção iterativa\n");
-    root = insertNodeIter(root, 38);
-    printf("Árvore após inserir nó 50:\n");
-    preOrder(root);
-
-    
-
-
-
-    //Questão 8: Busca iterativa;
-    printf("\n\nQuestão 8: Busca iterativa\n");
-    ref = SearchIter(root, 18);
-    ref = SearchIter(root, 122);
-
-    free(ref);
-
-}
 
 //Criar Nó
 Node *createNode(int key){
@@ -187,6 +39,11 @@ void posOrder(Node * root){
         posOrder(root->right);
         printf(" %d", root->key);
     }
+}
+
+//declaração de funções auxiliares
+int max(int a, int b){
+    return (a > b) ? a : b;
 }
 
 //QUESTão 1
@@ -336,7 +193,7 @@ Node * removeMin(Node * tree){
 
 //função de busca de nó
 Node * search(Node* root, int key){
-    if (root = NULL) {
+    if (root == NULL) {
         printf("Nó não encontrado!");
         return NULL;
     }
@@ -376,6 +233,7 @@ Node * removeNode(Node* root, int key){
             root->right = removeNode(root->right, temp->key);
         }
     }
+    return root;
 
 }
 
