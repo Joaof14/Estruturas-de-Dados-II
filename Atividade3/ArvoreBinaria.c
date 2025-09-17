@@ -136,9 +136,9 @@ int main(){
     printf("\nÁrvore é BST após remover mínimo?: %d", isBST(root));*/
 
     //Questão 6: inserção iterativa
-    printf("Questão 6: inserção iterativa");
+    printf("\n\nQuestão 6: inserção iterativa\n");
     root = insertNodeIter(root, 38);
-    printf("\nÁrvore após inserir nó 50:\n");
+    printf("Árvore após inserir nó 50:\n");
     preOrder(root);
 
     
@@ -146,9 +146,11 @@ int main(){
 
 
     //Questão 8: Busca iterativa;
-    printf("//Questão 8: Busca iterativa");
+    printf("\n\nQuestão 8: Busca iterativa\n");
+    ref = SearchIter(root, 18);
+    ref = SearchIter(root, 122);
 
-
+    free(ref);
 
 }
 
@@ -529,5 +531,26 @@ void insertNodeRef(Node** node, int key){
 
 //Questão 8
 Node * SearchIter(Node * root, int key){
+
+    while (root != NULL){
+        if (key > root->key){
+            root = root->right;
+        }
+        else if (key < root->key){
+            root = root->left;
+        }
+        else{
+            printf("Nó de valor %d encontrado!\n", root->key);
+            break;
+        }
+    }
+    if (root == NULL) {
+        printf("Nó de valor %d não encontrado\n", key);
+    }
+
+    return root;
+    
+
+    
 
 }
