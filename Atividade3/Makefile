@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -g
-TARGET=questoes
+TARGET=main
 
 SRCS=ArvoreBinaria.c Questoes.c
 HDRS=ArvoreBinaria.h
